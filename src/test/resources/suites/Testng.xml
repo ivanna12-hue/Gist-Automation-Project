@@ -1,0 +1,10 @@
+<!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd" >
+<suite name="API Test Suite" verbose="1" parallel="false">
+    <test name="TakeHomeAPITest">
+        <classes>
+            <class name="API.auth.LoginTest"/>
+            <class name="APITest.reqres.GetUsersTest"/>
+            <class name="APITest.reqres.GetUserByIdTest"/>
+        </classes>
+    </test>
+</suite>

@@ -1,0 +1,64 @@
+plugins {
+    id 'java'
+}
+
+group = 'org.example'
+version = '1.0-SNAPSHOT'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    // Selenium
+    implementation 'org.seleniumhq.selenium:selenium-java:4.35.0'
+
+    // WebDriverManager untuk auto-setup driver
+    testImplementation 'io.github.bonigarcia:webdrivermanager:5.9.2'
+    testImplementation platform('org.junit:junit-bom:5.10.0')
+    testImplementation 'org.junit.jupiter:junit-jupiter'
+    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+    testImplementation 'org.hamcrest:hamcrest:2.2'
+    testImplementation 'com.fasterxml.jackson.core:jackson-databind:2.18.0'
+    testImplementation 'io.rest-assured:rest-assured:5.3.1'
+    implementation 'org.json:json:20230227'
+    implementation 'org.apache.poi:poi:5.2.3'
+    implementation 'org.apache.poi:poi-ooxml:5.2.3'
+    testImplementation 'org.testng:testng:7.10.2'
+
+
+    // TestNG
+    testImplementation 'org.testng:testng:7.11.0'
+}
+
+test {
+    useTestNG {
+        // Ambil nama suite dari parameter Gradle (-Psuite=NamaSuite.xml)
+        def suite = project.hasProperty('suite') ? project.getProperty('suite') : "TakeHome.xml"
+
+        println "▶️  Running TestNG suite: ${suite}"
+
+        suiteXmlFiles = files("src/test/resources/suites/${suite}")
+    }
+
+    // Pass property browser (default = chrome)
+    systemProperty "browser", System.getProperty("browser", "chrome")
+
+    // Logging hasil test di console
+    testLogging {
+        events "passed", "failed", "skipped"
+        exceptionFormat "full"
+    }
+}
+
+test {
+    useTestNG {
+        // arahkan ke file testng.xml sesuai lokasi
+        suites 'src/test/java/runner/testng.xml'
+    }
+
+    testLogging {
+        showStandardStreams = true    // tampilkan log test di console
+        events "passed", "skipped", "failed" // tampilkan event penting
+    }
+}
